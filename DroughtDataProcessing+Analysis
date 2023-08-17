@@ -1,6 +1,7 @@
-base_filepath = '~/Processed_Data/'
 import pandas as pd  
 import matplotlib.pyplot as plt
+
+base_filepath = '~/Processed_Data/'
 
 # Import data into pandas DataFrames
 corn_yield = pd.read_csv(base_filepath+'Cleaned_Corn_Yield.csv')
@@ -9,8 +10,8 @@ wheat_yield = pd.read_csv(base_filepath+'Cleaned_Wheat_Yield.csv')
 areas_of_interest = pd.read_csv(base_filepath+'Areas_of_Interest.csv')
 
 # Turn the ISO 3166-1 alpha-2 codes for yield DataFrames into the proper string format
-corn_yield['ISO 3166-1 alpha-2 Code'] = corn_yield['ISO 3166-1 alpha-2 Code'].astype(str).str.zfill(5)
-soybean_yield['ISO 3166-1 alpha-2 Code'] = soybean_yield['ISO 3166-1 Code'].astype(str).str.zfill(5)
+corn_yield['ISO 3166-1 Code'] = corn_yield['ISO 3166-1 Code'].astype(str).str.zfill(5)
+soybean_yield['ISO 3166-1 Code'] = soybean_yield['ISO 3166-1 Code'].astype(str).str.zfill(5)
 wheat_yield['ISO 3166-1 Code'] = wheat_yield['ISO 3166-1 Code'].astype(str).str.zfill(5)
 
 # Find the area of interest for each specific crop
@@ -25,12 +26,10 @@ areas_of_interest.set_index('ISO 3166-1 Code', inplace=True)
 
 def main():
 	# Use the create_drought_data() method to process and create data for each crop
-	crop_list = ['Corn', 'Soybean', 'Wheat']
-	for crop in crop_list:
-		crop_complete = create_drought_data(crop)
-		crop_complete.to_csv(r''+base_filepath+'Final_Data/'+crop+'_Droughts.csv', index=False, header=True)
-
-
+				crop_list = ['Corn', 'Soybean', 'Wheat']
+				for crop in crop_list: 
+					crop_complete = create_drought_data(crop)
+					crop_complete.to_csv(r''+base_filepath+'Final_Data/'+crop+'_Droughts.csv', index=False, header=True)
 
 #--------------------------------------------------------------------------------
 # Method definition to create and return the DataFrame with drought information.
@@ -40,8 +39,7 @@ def create_drought_data(crop_type):
 	if (crop_type == 'Corn'):
 		yield_df = corn_yield
 		areas = corn_area
-		#counties = ['17079', '18095']  # TEMPORARY ASSIGNMENT, REMOVE LATER!!!
-		years = range(1991, 2020+1)
+		years = range(1991, 2023+1)
 		dates = ['-04-01', '-10-31']
 	elif (crop_type == 'Soybean'):
 		yield_df = soybean_yield
@@ -50,7 +48,7 @@ def create_drought_data(crop_type):
 		dates = ['-05-01', '-11-30']
 	elif (crop_type == 'Wheat'):
 		yield_df = wheat_yield
-		area = wheat_area
+		areas = wheat_area
 		years = range(1991, 2020+1)
 		dates = ['-11-01', '-07-31']
 		return create_wheat_drought_data(yield_df=yield_df, area=area, years=list(years), dates=dates)
@@ -66,7 +64,7 @@ def create_drought_data(crop_type):
 									 'Short_Time', 'Med_Time', 'Long_Time',
 									 'Total Drought Time', 'Total Drought Percentage'])
 
-	# Create a new row in the DataFrame for each county/year combination
+	# Create a new row in the DataFrame for each region/year combination
 	print(f'\nDrought calculations for {crop_type}:')
 	for area in areas:
 		print("Calculating drought data for "+areas_of_interest.loc[area, 'Location'])
@@ -128,13 +126,7 @@ def create_wheat_drought_data(yield_df, area, years, dates, crop_type='wheat'):
 	yield_df = yield_df[['Year', 'ISO 3166-1 Code', 'Value']].rename(columns={'ISO 3166-1 Code':'Area', 'Value':'Yield Value'})
 	return droughts.merge(right=yield_df, how='left', on=['Year', 'Area'])
 
-
-#---------------------------------------------------------------------------
-# Method to calculate the drought data for each growing season then returns 
-# the data as a dictionary. This method is called by the others to do the 
-# actual calculations.
-#---------------------------------------------------------------------------
-	def calculate_droughts(yield_df, area, year, growth_season, weather_df):
+def calculate_droughts(yield_df, area, year, growth_season, weather_df):
 	# Count the number of short, medium, and long length droughts
 		cur_len = 0
 		s_date, e_date = '', ''
@@ -222,7 +214,8 @@ def create_wheat_drought_data(yield_df, area, years, dates, crop_type='wheat'):
 				'Total Drought Time': total_drought,
 				'Total Drought Percentage': total_drought / num_days
 				} 
-	return data
+		return data
+
 main()
 print('Data has been processed and drought data has been calculated.')
 
