@@ -34,9 +34,9 @@ The model is designed to process and analyze crop yield and drought data for dif
     * It creates various graphs and plots, including average yield, mean total drought time, and mean total precipitation, for each crop type.
     * Additionally, it generates graphs that compare crop yield and drought statistics among different states or areas for each crop type.
 
-#Weather data will have to be pulled in through a custom UI, or via the base hazard model for drought from OS-Climate
+Weather data will have to be pulled in through a custom UI, or via the base hazard model for drought from OS-Climate
 
-#To integrate into the vulnerability module of the OS-Climate API, you need to import the relevant libraries, as per the libraries file.
+To integrate into the vulnerability module of the OS-Climate API, you need to import the relevant libraries, as per the libraries file.
 
 
 DSSAT - how to use:
