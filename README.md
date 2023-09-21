@@ -34,27 +34,9 @@ The model is designed to process and analyze crop yield and drought data for dif
     * It creates various graphs and plots, including average yield, mean total drought time, and mean total precipitation, for each crop type.
     * Additionally, it generates graphs that compare crop yield and drought statistics among different states or areas for each crop type.
 
+#Weather data will have to be pulled in through a custom UI, or via the base hazard model for drought from OS-Climate
 
-Weather data will have to be pulled in through a custom UI, or via the base hazard model for drought from OS-Climate:
-
-from physrisk.api.v1.hazard_data import HazardResource
-from physrisk.data.hazard_data_provider import HazardDataHint, SourcePath
-from physrisk.data.inventory import EmbeddedInventory, Inventory
-from physrisk.kernel import hazards
-from physrisk.kernel.hazards import ChronicDrought
-
-
-To integrate into the vulnerability module of the OS-Climate API, you need to import the relevant libraries:
-
-from physrisk.kernel.vulnerability_model import VulnerabilityModel
-from physrisk.api.v1.common import VulnerabilityCurve, VulnerabilityCurves
-from physrisk.api.v1.common import VulnerabilityCurve, VulnerabilityCurves
-from physrisk.kernel.assets import Asset, AgricultureAsset
-from physrisk.kernel.vulnerability_matrix_provider import VulnMatrixProvider
-from physrisk.kernel.vulnerability_model import VulnerabilityModel
-from ..kernel.hazards import ChronicDrought
-from ..kernel.vulnerability_model import applies_to_events, checked_beta_distrib, get_vulnerability_curves_from_resource
-
+#To integrate into the vulnerability module of the OS-Climate API, you need to import the relevant libraries, as per the libraries file.
 
 
 DSSAT - how to use:
